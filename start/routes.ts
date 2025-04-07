@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Task from '#models/task'
+import { updateTaskTitleController } from '#controllers/updateTaskTitle.controller'
 
 router.get('/', async () => {
   return {
@@ -18,7 +19,7 @@ router.get('/', async () => {
 })
 
 //Jr. Code
-router.put('/tasks/:id/title', async ({ params, request, response }: HttpContextContract) => {
+router.put('/tasks-jr/:id/title', async ({ params, request, response }: HttpContextContract) => {
   const id = params.id
   const title = request.input('title')
 
@@ -39,4 +40,5 @@ router.put('/tasks/:id/title', async ({ params, request, response }: HttpContext
   return response.send('Título atualizado com sucesso')
 })
 
-//importar rota da pasta routes
+router.put('/tasks/:id/title', updateTaskTitleController)
+
