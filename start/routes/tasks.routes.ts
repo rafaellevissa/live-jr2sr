@@ -1,5 +1,5 @@
 import express from 'express';
-import { updateTaskTitleController } from '../controllers/updateTaskTitle.controller';
+import { updateTaskTitleController } from '../../app/controllers/updateTaskTitle.controller.js'
 
 const router = express.Router();
 

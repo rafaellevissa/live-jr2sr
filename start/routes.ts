@@ -8,6 +8,8 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Task from '#models/task'
 
 router.get('/', async () => {
   return {
@@ -15,28 +17,26 @@ router.get('/', async () => {
   }
 })
 
-
 //Jr. Code
-router.put('/tasks/:id/title', async (req, res) => {
-  const id = req.params.id;
-  const title = req.body.title;
+router.put('/tasks/:id/title', async ({ params, request, response }: HttpContextContract) => {
+  const id = params.id
+  const title = request.input('title')
 
   if (!title || title.length < 3) {
-    return res.status(400).send('Título inválido');
+    return response.badRequest('Título inválido')
   }
 
-  const task = await db.tasks.findById(id);
+  const task = await Task.find(id)
 
   if (!task) {
-    return res.status(404).send('Tarefa não encontrada');
+    return response.notFound('Tarefa não encontrada')
   }
 
-  task.title = title;
-  await db.tasks.save(task);
+  task.title = title
+  await task.save()
 
-  console.log(`Título atualizado: ${title}`);
-  return res.send('Título atualizado com sucesso');
-});
-
+  console.log(`Título atualizado: ${title}`)
+  return response.send('Título atualizado com sucesso')
+})
 
 //importar rota da pasta routes
